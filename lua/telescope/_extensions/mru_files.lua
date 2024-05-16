@@ -83,6 +83,7 @@ local mru_files = function(opts)
                 }
             end
         },
+        previewer = conf.file_previewer(opts),
         sorter = conf.file_sorter(opts),
     }):find()
 end
