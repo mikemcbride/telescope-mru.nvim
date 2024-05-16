@@ -2,6 +2,10 @@
 
 Project-wide recent file picker for Telescope
 
+## Why?
+
+I often find myself wanting to edit the same few files in a project. The default `oldfiles` picker finds files across all projects, which often times includes many files that are not relevant to me. I want to be able to search through a list of most recently used files within the current project, which is what this plugin provides.
+
 ## Requirements
 
 - Neovim (>= 0.9.0)
