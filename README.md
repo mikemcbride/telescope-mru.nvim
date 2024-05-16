@@ -30,17 +30,8 @@ use {
 You can configure the plugin like any other Telescope picker. You can see the available options below.
 
 ```
--- You don't need to set any of these options.
--- IMPORTANT!: this is only a showcase of how you can set default options!
-require("telescope").setup {
-  extensions = {
-    mru_files = {
-      theme = "ivy",
-    },
-  },
-}
--- To get telescope-mru loaded and working with telescope,
--- you need to call load_extension, somewhere after setup function:
+-- To get the plugin loaded and working with telescope,
+-- you need to call load_extension somewhere after setup function:
 require("telescope").load_extension "mru_files"
 ```
 
@@ -62,7 +53,7 @@ end)
 The `mru_files` can take an options table. The default values are below:
 
 ```
-mru_opts = {
+{
     ignore = function(path, ext)
         return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
     end,
