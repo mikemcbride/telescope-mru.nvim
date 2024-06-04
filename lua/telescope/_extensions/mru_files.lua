@@ -6,6 +6,8 @@ local cdir = vim.fn.getcwd()
 local if_nil = vim.F.if_nil
 
 local mru_files = function(opts)
+    opts = opts or {}
+
     local function get_extension(fn)
         local match = fn:match("^.+(%..+)$")
         local ext = ""
@@ -19,17 +21,13 @@ local mru_files = function(opts)
 
     local mru_opts = {
         ignore = function(path, ext)
-            local is_commit_msg = string.find(path, "COMMIT_EDITMSG")
-            if is_commit_msg ~= nil then return false end
-            return vim.tbl_contains(default_mru_ignore, ext)
+            return (string.find(path, "COMMIT_EDITMSG") or (vim.tbl_contains(default_mru_ignore, ext)))
         end,
         max_items = 50
     }
 
-    opts = mru_opts
-
     local mru = function(cwd, local_opts)
-        local_opts = mru_opts
+        local_opts = local_opts or mru_opts
 
         -- default to 50 recent files if not present in options
         local max_items = if_nil(local_opts.max_items, 50)
@@ -46,7 +44,8 @@ local mru_files = function(opts)
                 cwd_cond = vim.startswith(v, cwd)
             end
             local ignore = (local_opts.ignore and local_opts.ignore(v, get_extension(v))) or false
-            if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
+            local is_git_commit_editmsg = (string.find(v, "COMMIT_EDITMSG") ~= nil)
+            if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore and not is_git_commit_editmsg then
                 oldfiles[#oldfiles + 1] = v
             end
         end
