@@ -6,8 +6,6 @@ local cdir = vim.fn.getcwd()
 local if_nil = vim.F.if_nil
 
 local mru_files = function(opts)
-    opts = opts or {}
-
     local function get_extension(fn)
         local match = fn:match("^.+(%..+)$")
         local ext = ""
@@ -17,7 +15,7 @@ local mru_files = function(opts)
         return ext
     end
 
-    local default_mru_ignore = { "gitcommit" }
+    local default_mru_ignore = { "gitcommit", "COMMIT_EDITMSG" }
 
     local mru_opts = {
         ignore = function(path, ext)
@@ -28,6 +26,9 @@ local mru_files = function(opts)
         end,
         max_items = 50
     }
+
+    opts = opts or mru_opts
+
 
     local mru = function(cwd, local_opts)
         local_opts = local_opts or mru_opts
