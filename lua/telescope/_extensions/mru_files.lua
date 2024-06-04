@@ -5,19 +5,6 @@ local plenary_path = require("plenary.path")
 local cdir = vim.fn.getcwd()
 local if_nil = vim.F.if_nil
 
-local function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
 local mru_files = function(opts)
     opts = opts or {}
 
@@ -34,14 +21,13 @@ local mru_files = function(opts)
 
     local mru_opts = {
         ignore = function(path, ext)
-            return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
+            return (string.find(path, "COMMIT_EDITMSG") > 0) or (vim.tbl_contains(default_mru_ignore, ext))
         end,
         max_items = 50
     }
 
     local mru = function(cwd, local_opts)
         local_opts = local_opts or mru_opts
-        dump(local_opts)
 
         -- default to 50 recent files if not present in options
         local max_items = if_nil(local_opts.max_items, 50)
@@ -59,8 +45,6 @@ local mru_files = function(opts)
             end
             print("path: " .. v)
             print("find commit_editmsg:" .. string.find(v, "COMMIT_EDITMSG"))
-            print("local_opts ignore:" .. local_opts.ignore)
-            print("ignore:" .. local_opts.ignore(v, get_extension(v)))
             local ignore = (local_opts.ignore and local_opts.ignore(v, get_extension(v))) or false
             if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
                 oldfiles[#oldfiles + 1] = v
