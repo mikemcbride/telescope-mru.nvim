@@ -20,7 +20,6 @@ local mru_files = function(opts)
     local mru_opts = {
         ignore = function(path, ext)
             local is_commit_msg = string.find(path, "COMMIT_EDITMSG")
-            print("is commit msg:" .. is_commit_msg)
             if is_commit_msg ~= nil then return false end
             return vim.tbl_contains(default_mru_ignore, ext)
         end,
