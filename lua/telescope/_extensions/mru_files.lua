@@ -21,8 +21,6 @@ local mru_files = function(opts)
 
     local mru_opts = {
         ignore = function(path, ext)
-            print("path: " .. path)
-            print("find commit_editmsg:" .. string.find(path, "COMMIT_EDITMSG"))
             return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
         end,
         max_items = 50
@@ -45,6 +43,9 @@ local mru_files = function(opts)
             else
                 cwd_cond = vim.startswith(v, cwd)
             end
+            print("path: " .. v)
+            print("find commit_editmsg:" .. string.find(v, "COMMIT_EDITMSG"))
+            print("ignore:" .. local_opts.ignore(v, get_extension(v)))
             local ignore = (local_opts.ignore and local_opts.ignore(v, get_extension(v))) or false
             if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
                 oldfiles[#oldfiles + 1] = v
