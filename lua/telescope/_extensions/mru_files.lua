@@ -5,6 +5,19 @@ local plenary_path = require("plenary.path")
 local cdir = vim.fn.getcwd()
 local if_nil = vim.F.if_nil
 
+local function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 local mru_files = function(opts)
     opts = opts or {}
 
@@ -28,7 +41,7 @@ local mru_files = function(opts)
 
     local mru = function(cwd, local_opts)
         local_opts = local_opts or mru_opts
-        print("local opts:" .. local_opts)
+        dump(local_opts)
 
         -- default to 50 recent files if not present in options
         local max_items = if_nil(local_opts.max_items, 50)
