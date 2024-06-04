@@ -28,6 +28,7 @@ local mru_files = function(opts)
 
     local mru = function(cwd, local_opts)
         local_opts = local_opts or mru_opts
+        print("local opts:" .. local_opts)
 
         -- default to 50 recent files if not present in options
         local max_items = if_nil(local_opts.max_items, 50)
