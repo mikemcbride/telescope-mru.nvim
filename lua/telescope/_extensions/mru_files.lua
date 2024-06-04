@@ -45,6 +45,7 @@ local mru_files = function(opts)
             end
             print("path: " .. v)
             print("find commit_editmsg:" .. string.find(v, "COMMIT_EDITMSG"))
+            print("local_opts ignore:" .. local_opts.ignore)
             print("ignore:" .. local_opts.ignore(v, get_extension(v)))
             local ignore = (local_opts.ignore and local_opts.ignore(v, get_extension(v))) or false
             if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
