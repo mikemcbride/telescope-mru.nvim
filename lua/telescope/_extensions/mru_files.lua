@@ -21,6 +21,8 @@ local mru_files = function(opts)
 
     local mru_opts = {
         ignore = function(path, ext)
+            print("path: " .. path)
+            print("find commit_editmsg:" .. string.find(path, "COMMIT_EDITMSG"))
             return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
         end,
         max_items = 50
